@@ -236,7 +236,7 @@ export function ChatBox({ ticketId, currentUser, onNewMessage }: ChatBoxProps) {
                               rel="noopener noreferrer"
                               className="block"
                             >
-                              <img
+                              <Image
                                 src={message.attachment_url}
                                 alt="附件图片"
                                 className="max-w-full rounded-md hover:opacity-90 transition-opacity"
@@ -278,7 +278,7 @@ export function ChatBox({ ticketId, currentUser, onNewMessage }: ChatBoxProps) {
                   className="relative group"
                 >
                   {url.match(/\.(jpg|jpeg|png|gif|webp)$/i) ? (
-                    <img
+                    <Image
                       src={url}
                       alt="预览"
                       className="h-16 w-16 object-cover rounded-md"
