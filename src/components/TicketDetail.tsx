@@ -8,17 +8,7 @@ import { Button } from '@/components/ui/button'
 import { TICKET_TYPES, TICKET_STATUS, type Ticket, type User } from '@/types'
 import { formatDate, getTicketTypeName } from '@/lib/utils'
 import { ChatBox } from '@/components/ChatBox'
-
-  Building2,
-  User as UserIcon,
-  Clock,
-  StatusChange,
-  FileText,
-  Image as ImageIcon,
-  CheckCircle2,
-  XCircle,
-  AlertCircle,
-} from 'lucide-react'
+import { Building2, User as UserIcon, Clock, FileText, Image as ImageIcon, CheckCircle2, XCircle, AlertCircle, RefreshCw } from 'lucide-react'
 
 interface TicketDetailProps {
   ticket: Ticket
@@ -27,11 +17,11 @@ interface TicketDetailProps {
 }
 
 export function TicketDetail({ ticket, currentUser, isAdmin = false }: TicketDetailProps) {
-  const router = useRouter()
-  const [isUpdating, setIsUpdating] = useState(false)
+  const router = useRouter();
+  const [isUpdating, setIsUpdating] = useState(false);
 
-  const typeConfig = TICKET_TYPES[ticket.type]
-  const statusConfig = TICKET_STATUS[ticket.status]
+  const typeConfig = TICKET_TYPES[ticket.type];
+  const statusConfig = TICKET_STATUS[ticket.status];
 
   const handleStatusChange = async (newStatus: 'completed' | 'closed') => {
     setIsUpdating(true)
@@ -54,7 +44,7 @@ export function TicketDetail({ ticket, currentUser, isAdmin = false }: TicketDet
 
   // 渲染表单数据
   const renderFormData = () => {
-    const formData = ticket.form_data as Record<string, unknown>
+    const formData = ticket.form_data as Record<string, unknown>;
 
     return (
       <div className="space-y-4">
