@@ -1,5 +1,5 @@
-"use client"
-import {
+"use client
+
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button'
 import { TICKET_TYPES, TICKET_STATUS, type Ticket, type User } from '@/types'
 import { formatDate, getTicketTypeName } from '@/lib/utils'
 import { ChatBox } from '@/components/ChatBox'
-import {
+
   Building2,
   User as UserIcon,
   Clock,
