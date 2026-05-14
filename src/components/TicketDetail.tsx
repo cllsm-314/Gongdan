@@ -23,7 +23,7 @@ export function TicketDetail({ ticket, currentUser, isAdmin = false }: TicketDet
   const typeConfig = TICKET_TYPES[ticket.type];
   const statusConfig = TICKET_STATUS[ticket.status];
 
-  const handleStatusChange = async (newStatus: 'completed' | 'closed') => {
+  const handleRefreshCw = async (newStatus: 'completed' | 'closed') => {
     setIsUpdating(true)
     try {
       const response = await fetch(`/api/tickets/${ticket.id}`, {
@@ -143,7 +143,7 @@ export function TicketDetail({ ticket, currentUser, isAdmin = false }: TicketDet
             </div>
 
             <div className="flex items-center gap-2 text-sm">
-              <StatusChange className="h-4 w-4 text-muted-foreground" />
+              <RefreshCw className="h-4 w-4 text-muted-foreground" />
               <span>更新时间：{formatDate(ticket.updated_at)}</span>
             </div>
           </CardContent>
