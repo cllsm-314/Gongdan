@@ -19,7 +19,7 @@ export default async function TicketDetailPage({ params }: TicketDetailPageProps
   }
 
   const session = await getSession()
-  const user = session.data.userId ? await getUser(session.data.userId) : null
+  const user = session.userId ? await getUser(session.userId) : null
 
   if (!user) {
     redirect('/login')
@@ -51,7 +51,7 @@ export default async function TicketDetailPage({ params }: TicketDetailPageProps
   }
 
   // 检查权限：只能查看自己的工单
-  const isAdmin = session.data.role === 'admin'
+  const isAdmin = session.role === 'admin'
   const isCreator = ticket.created_by === user.id
 
   if (!isAdmin && !isCreator) {

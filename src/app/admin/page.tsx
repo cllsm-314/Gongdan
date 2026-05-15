@@ -23,7 +23,7 @@ export default async function AdminPage() {
   }
 
   const session = await getSession()
-  const user = session.data.userId ? await getUser(session.data.userId) : null
+  const user = session.userId ? await getUser(session.userId) : null
 
   if (!user) {
     redirect('/login')

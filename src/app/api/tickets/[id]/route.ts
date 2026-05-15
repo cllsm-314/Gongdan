@@ -16,7 +16,7 @@ export async function GET(
   try {
     const session = await getSession()
     
-    if (!session.data.userId) {
+    if (!session.userId) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
@@ -38,8 +38,8 @@ export async function GET(
     }
 
     // 检查权限：管理员或创建者可以查看
-    const isAdmin = session.data.role === 'admin'
-    const isCreator = data.created_by === session.data.userId
+    const isAdmin = session.role === 'admin'
+    const isCreator = data.created_by === session.userId
 
     if (!isAdmin && !isCreator) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
@@ -60,7 +60,7 @@ export async function PATCH(
   try {
     const session = await getSession()
     
-    if (!session.data.userId) {
+    if (!session.userId) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
@@ -80,8 +80,8 @@ export async function PATCH(
     }
 
     // 检查权限：只有管理员可以更新状态
-    const isAdmin = session.data.role === 'admin'
-    const isCreator = existingTicket.created_by === session.data.userId
+    const isAdmin = session.role === 'admin'
+    const isCreator = existingTicket.created_by === session.userId
 
     if (!isAdmin && !isCreator) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
@@ -129,12 +129,12 @@ export async function DELETE(
   try {
     const session = await getSession()
     
-    if (!session.data.userId) {
+    if (!session.userId) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
     // 只有管理员可以删除
-    if (session.data.role !== 'admin') {
+    if (session.role !== 'admin') {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
     }
 

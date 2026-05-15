@@ -13,14 +13,14 @@ export async function GET(request: NextRequest) {
   try {
     const session = await getSession()
     
-    if (!session.data.userId) {
+    if (!session.userId) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
     const searchParams = request.nextUrl.searchParams
     const status = searchParams.get('status')
     const type = searchParams.get('type')
-    const isAdmin = session.data.role === 'admin'
+    const isAdmin = session.role === 'admin'
 
     let query = supabase
       .from('tickets')
@@ -33,7 +33,7 @@ export async function GET(request: NextRequest) {
 
     // 非管理员只能查看自己的工单
     if (!isAdmin) {
-      query = query.eq('created_by', session.data.userId)
+      query = query.eq('created_by', session.userId)
     }
 
     if (status) {
@@ -63,7 +63,7 @@ export async function POST(request: NextRequest) {
   try {
     const session = await getSession()
     
-    if (!session.data.userId) {
+    if (!session.userId) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
@@ -87,7 +87,7 @@ export async function POST(request: NextRequest) {
       .insert({
         type,
         store_id,
-        created_by: session.data.userId,
+        created_by: session.userId,
         title,
         status: 'pending',
         form_data,

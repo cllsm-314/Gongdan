@@ -240,7 +240,7 @@ export function ChatBox({ ticketId, currentUser, onNewMessage }: ChatBoxProps) {
                               <Image
                                 src={message.attachment_url}
                                 alt="附件图片"
-                                className="max-w-full rounded-md hover:opacity-90 transition-opacity"
+                                className="max-w-full rounded-md hover:opacity-90 transition-opacity" width={300} height={300}
                               />
                             </a>
                           ) : (

@@ -171,7 +171,7 @@ export function TicketDetail({ ticket, currentUser, isAdmin = false }: TicketDet
                 <Button
                   variant="outline"
                   className="w-full"
-                  onClick={() => handleStatusChange('processing')}
+                  onClick={() => handleRefreshCw('processing')}
                   disabled={isUpdating}
                 >
                   <AlertCircle className="h-4 w-4 mr-2" />
@@ -181,7 +181,7 @@ export function TicketDetail({ ticket, currentUser, isAdmin = false }: TicketDet
               <Button
                 variant="default"
                 className="w-full"
-                onClick={() => handleStatusChange('completed')}
+                onClick={() => handleRefreshCw('completed')}
                 disabled={isUpdating}
               >
                 <CheckCircle2 className="h-4 w-4 mr-2" />
@@ -190,7 +190,7 @@ export function TicketDetail({ ticket, currentUser, isAdmin = false }: TicketDet
               <Button
                 variant="outline"
                 className="w-full text-red-600 hover:text-red-600 hover:bg-red-50"
-                onClick={() => handleStatusChange('closed')}
+                onClick={() => handleRefreshCw('closed')}
                 disabled={isUpdating}
               >
                 <XCircle className="h-4 w-4 mr-2" />

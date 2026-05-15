@@ -39,13 +39,13 @@ export async function getSession(): Promise<IronSession<SessionData>> {
 // 检查是否已登录
 export async function isLoggedIn(): Promise<boolean> {
   const session = await getSession()
-  return !!session.data.userId
+  return !!session.userId
 }
 
 // 检查是否为管理员
 export async function isAdmin(): Promise<boolean> {
   const session = await getSession()
-  return session.data.role === 'admin'
+  return session.role === 'admin'
 }
 
 // 清除 session
@@ -57,29 +57,29 @@ export async function clearSession(): Promise<void> {
 // 获取当前用户 ID
 export async function getCurrentUserId(): Promise<string | null> {
   const session = await getSession()
-  return session.data.userId || null
+  return session.userId || null
 }
 
 // 获取当前用户角色
 export async function getCurrentUserRole(): Promise<'admin' | 'store' | null> {
   const session = await getSession()
-  return session.data.role || null
+  return session.role || null
 }
 
 // 保存 OAuth state 到 session
 export async function saveOAuthState(state: string): Promise<void> {
   const session = await getSession()
-  session.data.oauthState = state
+  session.oauthState = state
   await session.save()
 }
 
 // 获取并清除 OAuth state
 export async function getAndClearOAuthState(expectedState: string): Promise<boolean> {
   const session = await getSession()
-  const savedState = session.data.oauthState
+  const savedState = session.oauthState
   
   // 清除 state
-  session.data.oauthState = undefined
+  session.oauthState = undefined
   await session.save()
   
   // 验证 state

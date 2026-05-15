@@ -16,7 +16,7 @@ export async function GET(
   try {
     const session = await getSession()
     
-    if (!session.data.userId) {
+    if (!session.userId) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
@@ -34,8 +34,8 @@ export async function GET(
     }
 
     // 检查权限
-    const isAdmin = session.data.role === 'admin'
-    const isCreator = ticket.created_by === session.data.userId
+    const isAdmin = session.role === 'admin'
+    const isCreator = ticket.created_by === session.userId
 
     if (!isAdmin && !isCreator) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
@@ -71,7 +71,7 @@ export async function POST(
   try {
     const session = await getSession()
     
-    if (!session.data.userId) {
+    if (!session.userId) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
@@ -91,8 +91,8 @@ export async function POST(
     }
 
     // 检查权限
-    const isAdmin = session.data.role === 'admin'
-    const isCreator = ticket.created_by === session.data.userId
+    const isAdmin = session.role === 'admin'
+    const isCreator = ticket.created_by === session.userId
 
     if (!isAdmin && !isCreator) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
@@ -103,7 +103,7 @@ export async function POST(
       .from('ticket_messages')
       .insert({
         ticket_id: ticketId,
-        sender_id: session.data.userId,
+        sender_id: session.userId,
         content: content || '',
         attachment_type: attachment_type || 'text',
         attachment_url: attachment_url || null,
