@@ -4,6 +4,16 @@ import { getSession, sessionOptions, defaultSession, getAndClearOAuthState } fro
 import { upsertUser } from '@/lib/supabase'
 import { cookies } from 'next/headers'
 
+// 添加 SessionData 接口定义
+interface SessionData {
+  userId: string
+  feishuUserId: string
+  name: string
+  avatarUrl: string
+  role: string
+  storeId: string
+}
+
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams
@@ -11,38 +21,32 @@ export async function GET(request: NextRequest) {
     const state = searchParams.get('state')
     const error = searchParams.get('error')
 
-    // 处理错误情况
     if (error) {
       console.error('Feishu OAuth error:', error)
       return NextResponse.redirect('/login?error=auth_denied')
     }
 
-    // 检查必要的参数
     if (!code) {
       return NextResponse.redirect('/login?error=missing_code')
     }
 
-    // 验证 state 参数（CSRF 防护）
     if (!state || !(await getAndClearOAuthState(state))) {
       console.error('OAuth state validation failed')
       return NextResponse.redirect('/login?error=invalid_state')
     }
 
-    // 用 code 换取 access_token
     const tokenData = await getAccessToken(code)
     
     if (!tokenData) {
       return NextResponse.redirect('/login?error=token_failed')
     }
 
-    // 获取用户信息
     const userInfo = await getFeishuUserInfo(tokenData.access_token)
     
     if (!userInfo) {
       return NextResponse.redirect('/login?error=user_info_failed')
     }
 
-    // 在数据库中创建或更新用户
     const user = await upsertUser({
       feishu_user_id: userInfo.id,
       name: userInfo.name,
@@ -53,10 +57,9 @@ export async function GET(request: NextRequest) {
       return NextResponse.redirect('/login?error=user_create_failed')
     }
 
-    // 获取 session 并设置用户信息
     const cookieStore = await cookies()
     const { getIronSession } = await import('iron-session')
-    const session = await getIronSession(cookieStore, sessionOptions)
+    const session = await getIronSession<SessionData>(cookieStore, sessionOptions)
 
     session.data = {
       userId: user.id,
@@ -69,7 +72,6 @@ export async function GET(request: NextRequest) {
     
     await session.save()
 
-    // 根据角色重定向
     if (user.role === 'admin') {
       return NextResponse.redirect('/admin')
     } else {
