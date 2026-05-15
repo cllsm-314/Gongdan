@@ -1,5 +1,6 @@
 "use client"
 
+import Image from 'next/image'
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
